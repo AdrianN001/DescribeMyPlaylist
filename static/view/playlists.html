@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "/static/styles/playlists.css">
+
+    <title>Rate My Playlist</title>
+
+</head>
+<body>
+    <div class="main-container">
+
+        <button id="music-control-button">Toggle music</button>
+        <h1>Now pick a playlist...</h1>
+        <svg width="205" height="1053" viewBox="0 0 205 1053" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M194.5 598.625C268.5 968.625 -75.5 1365.12 -87.2956 1138.62C-188.373 1138.62 -225 970.85 -225 711.5C-225 452.15 -114.5 -58.8752 129.5 6.12478C230.578 6.12478 150.1 376.625 194.5 598.625Z" fill="url(#paint0_linear_6_2)"/>
+            <defs>
+            <linearGradient id="paint0_linear_6_2" x1="-352.908" y1="778.131" x2="-305.872" y2="26.2615" gradientUnits="userSpaceOnUse">
+            <stop offset="0.25" stop-color="#1DB954"/>
+            <stop offset="1" stop-color="#191414"/>
+            </linearGradient>
+            </defs>
+        </svg>
+
+        <div class="all-playlists-container">
+                <div class="playlist-container" >
+                    <div class="playlist-name">Saved tracks</div>
+                    <div class="playlist-description">Your saved musics</div>
+                    <div class="playlist-id">saved-tracks</div>
+                </div>
+            {{ range $index, $element := .Playlists}}
+                <div class="playlist-container" >
+                    <div class="playlist-name">{{$element.Name}}</div>
+                    <div class="playlist-description">{{$element.Description}}</div>
+                    <div class="playlist-id">{{$element.ID}}</div>
+                    <img class="playlist-thumbnail" src="{{(index $element.Images 0).URL}}"/>
+                </div>
+            {{end}}
+
+        </div>
+
+
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <script src="/static/js/playlists.js"></script>
+    </div>
+
+</body>
+</html>

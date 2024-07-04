@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate My Playlist</title>
+    <link rel= "stylesheet" type= "text/css" href= "/static/styles/popularity.css">
+    <script defer src="/static/js/popularity.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+       <div class="popularity_button"><b>Popularity</b></div>
+       <div class="next_button">Next =></div>
+    </header>
+<div class="main_content">
+
+    <div class="hero animate__animated animate__fadeInDown">
+        How popular is your taste?
+    </div>
+
+    <div class="popular_song_container animate__animated animate__fadeInDown" >
+        <div>Most popular song:  <b>{{.MostPopularSongName}}</b></div>
+        <div>Least popular song: <b>{{.LeastPopularSongName}}</b></div>
+        <div>Average popularity: <b>{{.AverageRating}}%</b></div>
+        <hr>
+        <div>Overall: <b>{{.Overall}}</b></div>
+    </div>
+
+    <div id="canvas_container">
+        <canvas id="myChart"></canvas>
+    </div>
+
+
+    <audio id="background_music" autoplay="true">
+    
+        <source src="{{.MostPopularSongPreviewUrl}}">
+    
+    </audio>
+
+    <div class="floating_svg animate__animated animate__fadeInUp">
+        <svg id="floating_svg_tag" width="598" height="714" viewBox="0 0 598 714" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M720.5 418C720.5 631.734 405.76 868.617 234 868.617C62.2394 868.617 0 730.352 0 516.617C0 302.883 62.2393 0 234 0C405.76 0 720.5 204.266 720.5 418Z" fill="url(#paint0_linear_1_20)"/>
+            <defs>
+            <linearGradient id="paint0_linear_1_20" x1="181.003" y1="-14.1173" x2="482.497" y2="854.5" gradientUnits="userSpaceOnUse">
+            <stop offset="0.25" stop-color="#1DB954"/>
+            <stop offset="1" stop-color="#191414"/>
+            </linearGradient>
+            </defs>
+        </svg>
+       
+    </div>
+
+    <div class="footer_svg animate__animated animate__fadeInUp">
+        <svg width="1920" height="203" viewBox="0 0 1920 203" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2042 114.5C2042 328.328 1056.5 565.316 518.691 565.316C-19.1185 565.316 -214 426.989 -214 213.161C77 -151.184 323.19 62.3159 861 62.3159C1398.81 62.3159 2042 -99.3283 2042 114.5Z" fill="url(#paint0_linear_7_5)"/>
+        <defs>
+        <linearGradient id="paint0_linear_7_5" x1="1466.43" y1="191.582" x2="702.978" y2="-497.944" gradientUnits="userSpaceOnUse">
+        <stop offset="0.241666" stop-color="#1DB954"/>
+        <stop offset="1" stop-color="#191414"/>
+        </linearGradient>
+        </defs>
+        </svg>
+    </div>
+
+        
+
+
+    
+</div>
+    
+</body>
+</html>

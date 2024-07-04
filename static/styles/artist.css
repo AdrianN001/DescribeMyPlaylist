@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root{
+    --main_bgd-color:#191414;
+    --main-text-color:#FFFFFF;
+    --header-color:#2F2C2C;
+}
+
+html, body{
+    background-color: var(--main_bgd-color);
+    color: var(--main-text-color);
+
+    font-family: "Inter", sans-serif;
+    height: 100%;
+}
+
+.main_content{
+    overflow: auto;
+}
+a{
+    color:white;
+    text-decoration: none;
+}
+.header{
+    font-size: 30px;
+    background: rgb(47,44,44);
+    background: linear-gradient(47deg, rgba(47,44,44,1) 69%, rgba(0,0,0,1) 100%); 
+    filter: drop-shadow(5px 5px 10px #000000);
+    display: flex;
+    align-items: center;
+    border-radius: 5%;
+    justify-content: left;
+
+    
+    height: 8vh;
+    width:  100%;
+    min-width: auto;
+}
+.rate_button{
+    margin-left: 10%;
+}
+.compare_button{
+    margin-left: 30%;
+}
+.login_button{
+    margin-left: auto;
+
+
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 17px 48px;
+    color: #fff;
+    background-color: #1ED760;
+    height: 48px;
+
+}
+
+.login_button:hover{
+    transform: scale(1.04);
+    background-color: #21e065;
+}
+
+.hero{
+    font-size: 100px;
+    float:left;
+    margin-left: 5%;
+    margin-top: 2%;
+    width: 20vw;
+    word-spacing: 100vw;
+
+
+}
+
+
+/* The typing effect */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+  }
+
+.floating_svg{
+    float:right;
+}
+
+#floating_svg_tag{
+    margin-top: 20%;
+    margin-left: 50%;
+    z-index: 0;
+}
+
+.next_page_button_container{
+    float:right;
+    margin-top: 30%;
+}
+.next_page_button{
+    width: 25vw;
+    font-size: 50px;
+    height: 15vh;
+}
+
+.footer_svg{
+    position: absolute;
+    top:85%;
+    z-index: 1;
+}
+
+#canvas_container{
+    position: absolute;
+    top:25%;
+    left:40%;
+    width: 40%;
+}
+
+.popular_song_container{
+    position: absolute;
+    top:70%;
+    left:40%;
+    width: 40%;
+
+    justify-content: center;
+    
+}
+.next_button{
+    margin-left: auto;
+    cursor:pointer
+}
+.popularity_button{
+    margin-left: 5%;
+
+}
+.popular_song_container>div{
+    font-size:18px
+}
+
+
+.artist_button{
+    margin-left: 10%;
+}
