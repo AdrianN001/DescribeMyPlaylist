@@ -22,15 +22,15 @@ type EmotionalRating struct {
 	NumberOfSadSong 		int
 }
 
-func RateAudioFeaturesOfSaved(ctx context.Context, user wrapper.User) (GenreDiversityRating, error){
+func RateEmotionalVibeOfSaved(ctx context.Context, user wrapper.User) (EmotionalRating, error){
 	current_user, err := user.CurrentUser(ctx)
 	if err != nil{
-		return GenreDiversityRating{}, err
+		return EmotionalRating{}, err
 	}
 	cache_key := fmt.Sprintf("%s-%s", current_user.ID, "saved-tracks")
 	cached_playlist, err := GetTracksFromSaved(ctx, user, cache_key)
 	if err != nil{
-		return GenreDiversityRating{}, err
+		return EmotionalRating{}, err
 	}
 
 	var wg sync.WaitGroup
@@ -70,7 +70,7 @@ func RateAudioFeaturesOfSaved(ctx context.Context, user wrapper.User) (GenreDive
 	rating := SearchForTheEdgeSongs(song_moods)
 
 	fmt.Printf("%+v\n", rating)
-	return GenreDiversityRating{}, nil
+	return rating, nil
 }
 
 

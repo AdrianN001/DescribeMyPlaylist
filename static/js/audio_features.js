@@ -21,10 +21,10 @@ const ctx = document.getElementById('myChart');
 new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ['Azahriah', 'Rammstein', 'Other Artists'],
+    labels: ['Happy', 'Sad', 'Relaxing', 'Angry'],
     datasets: [{
-      label: '# of songs',
-      data: [30, 8, 405],
+      label: '# of songs with a given emotional feeling',
+      data: [226, 34, 11, 166],
       borderWidth: 1
     }]
   },

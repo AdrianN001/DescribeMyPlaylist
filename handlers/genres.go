@@ -45,7 +45,7 @@ func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
 	user.Init(auth.Client(r.Context(), &token))
 	
 
-	rating.RateAudioFeaturesOfSaved(r.Context(), user)
+	rating.RateEmotionalVibeOfSaved(r.Context(), user)
 
 
 	w.Write([]byte("asd23"))

@@ -18,6 +18,7 @@ func main() {
 	http.HandleFunc("/popularity", handlers.PopularityPageHandler)
 	http.HandleFunc("/artist", handlers.ArtistPageHandler)
 	http.HandleFunc("/genre", handlers.GenrePageHandler)
+	http.HandleFunc("/emotional", handlers.EmotionalPageHandler)
 	
 	http.HandleFunc("/{$}", handlers.HomePageHandler)
 
