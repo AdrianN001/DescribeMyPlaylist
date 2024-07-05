@@ -13,12 +13,15 @@ import (
 )
 
 type GenreDiversityRating struct {
-	FavouriteGenre				string
-	SecondFavouriteGenre 		string
+	FavouriteGenre				 	string
+	NumberOfSongsFromFavGenre	 	int
+	SecondFavouriteGenre 		 	string
+	NumberOfSongsFromSecFavGenre 	int
 
-	LeastFavouriteGenre			string
+	SampleSong						spotify.SavedTrack
 
-	NumberOfGenres				int
+	NumberOfGenres					int
+	NumberOfSongs					int
 }
 
 func RateGenreDiversityFromSaved(ctx context.Context, user wrapper.User) (GenreDiversityRating, error){
@@ -35,48 +38,45 @@ func RateGenreDiversityFromSaved(ctx context.Context, user wrapper.User) (GenreD
 	var wg sync.WaitGroup
 	var mutex sync.Mutex
 	
-	var should_continue bool = true
-	var artists []spotify.FullArtist = make([]spotify.FullArtist, 0, 500)
+	var artists []spotify.FullArtist = make([]spotify.FullArtist, 500)
 
-	var buffer []spotify.ID = make([]spotify.ID, 0, 25)
-
-	for _, song := range cached_playlist{
-		if !should_continue{
-			break
-		}
-		artist_ids := utils.Map[spotify.SimpleArtist, spotify.ID](song.Artists, func (artist spotify.SimpleArtist) spotify.ID {
-			return artist.ID
+	for i := 0; i < int(len(cached_playlist)/20)*20; i += 20{
+		sub_slice := cached_playlist[i: i+20]
+		sub_slice_ids := utils.Map[spotify.SavedTrack, spotify.ID](sub_slice, func(st spotify.SavedTrack) spotify.ID {
+			return st.Artists[0].ID
 		})
-		buffer = append(buffer, artist_ids...)
-		if len(buffer) <= 15{
-			continue
-		}
-		
-		log.Println(buffer)
 		wg.Add(1)
-		go func( ids *[]spotify.ID) {
+
+		go func(song_ids []spotify.ID, subslice_start, subslice_end int){
 			defer wg.Done()
-			if !should_continue{
-				return
-			}
-			fetched_buffered_artists, err := GetArtists(ctx, user, *ids)
+
+			audio_features, err := GetArtists(ctx, user, song_ids)
 			if err != nil{
-				should_continue = false
-				log.Println(err.Error())
-				//TODO stays like this untill higher api rate allowed
-				return
+				log.Fatalln(err)
 			}
+
 			mutex.Lock()
-			artists = append(artists, fetched_buffered_artists...)
-			(*ids) = (*ids)[:0]
+			artist_index := 0
+			for j := subslice_start; j < subslice_end; j++{
+				artists[j] = audio_features[artist_index]
+				artist_index++
+			}
 			mutex.Unlock()
-		}( &buffer)
+		}(sub_slice_ids, i, i+20)
 	}
+
 	wg.Wait()
-	log.Println(len(artists))
+	artists = artists[: len(cached_playlist)]
 	genre_frequencies := ArtistsToGenres(artists)
-	TopGenresFromFrequencies(genre_frequencies)
-	return GenreDiversityRating{}, nil
+	rating := TopGenresFromFrequencies(genre_frequencies)
+
+	sample_song, err := SearchSongFromSavedWithGenre(ctx, user, cached_playlist, rating.FavouriteGenre)
+	if err != nil{
+		return GenreDiversityRating{}, err
+	}
+	rating.SampleSong = sample_song
+
+	return rating, nil
 }
 
 func ArtistsToGenres(artists []spotify.FullArtist) map[string]int {
@@ -100,9 +100,11 @@ func TopGenresFromFrequencies(genres map[string]int) GenreDiversityRating{
 	number_of_genres := len(genres)
 
 	var genres_keys []string = make([]string, 0, number_of_genres)
+	var songs_count int = 0
 
 	for key := range genres {		
 		genres_keys = append(genres_keys, key)
+		songs_count += genres[key]
 	} 
 
 	sort.SliceStable(genres_keys, func(i, j int) bool {
@@ -116,7 +118,38 @@ func TopGenresFromFrequencies(genres map[string]int) GenreDiversityRating{
 	fmt.Printf("second_favourite_genre: %v\n", second_favourite_genre)
 	fmt.Printf("number_of_genres: %v\n", number_of_genres)
 
-	return GenreDiversityRating{}
+	return GenreDiversityRating{
+		FavouriteGenre: favourite_genre,
+		NumberOfSongsFromFavGenre: genres[favourite_genre],
+
+		SecondFavouriteGenre: second_favourite_genre,
+		NumberOfSongsFromSecFavGenre: genres[second_favourite_genre],
+
+		NumberOfGenres: number_of_genres,
+		NumberOfSongs: songs_count,
+	}
+}
+
+func SearchSongFromSavedWithGenre(ctx context.Context, user wrapper.User, songs []spotify.SavedTrack, searched_genre string) (spotify.SavedTrack, error){
+	for _, song := range songs{
+
+		main_artist := song.Artists[0].ID
+
+		// At this point, it is 100% cached already
+		full_artists, err := GetArtists(ctx, user, []spotify.ID{main_artist}) 
+		if err != nil{
+			return spotify.SavedTrack{}, err
+		}
+		full_artist := full_artists[0]
+
+		for _, genre := range full_artist.Genres{
+			if genre == searched_genre{
+				return song, nil
+			}
+		}
+	}
+
+	return spotify.SavedTrack{}, fmt.Errorf("song not found")
 }
 
 func RateGenreDiversityFromPlaylist(ctx context.Context, user wrapper.User, playlist_id string){

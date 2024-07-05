@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate My Playlist</title>
+    <link rel= "stylesheet" type= "text/css" href= "/static/styles/musical_element.css">
+    <script defer src="/static/js/musical_element.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+       <div class="popularity_button">Popularity</div>
+       <div class="artist_button">Artist</div>
+       <div class="audio_features_button">Emotions</div>
+       <div class="musical_elements_button"><b>Musical Elements</b></div>
+       <div class="next_button">Next =></div>
+    </header>
+<div class="main_content">
+
+    <div class="hero animate__animated animate__fadeInDown">
+        What vibes <br> does it gives off?
+    </div>
+
+    <div class="popular_song_container animate__animated animate__fadeInDown" >
+        <div>Average tempo: <b>{{.AverageTempo}}</b></div>
+        <div>Average pitch: <b>{{.AveragePitch}}</b></div>
+        <hr>
+        <div>Danceability of your songs: <b>{{.AverageDanceability}}</b></div>
+        <div>Singability of your songs: <b>{{.AverageSingability}}</b></div>
+        
+    </div>
+
+    <div id="overviews_container" class="animate__animated animate__fadeInUp">
+        <ul>
+            {{ range $index, $element := .Overviews}}
+            <li>{{$element}}</li>
+            {{end}}
+        </ul>
+    </div>
+
+
+    <audio id="background_music" autoplay="true">
+    
+        <source src="{{.BackgroundMusicPreviewUrl}}">
+    
+    </audio>
+
+    <div class="floating_svg animate__animated animate__fadeInUp">
+        <svg id="floating_svg_tag" width="794" height="840" viewBox="0 0 794 840" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M793 413.5C813 925.5 451.76 875.5 280 875.5C108.239 875.5 0 732.734 0 519C0 305.266 108.239 0 280 0C451.76 0 793 199.766 793 413.5Z" fill="url(#paint0_linear_7_37)"/>
+        <defs>
+        <linearGradient id="paint0_linear_7_37" x1="227.003" y1="-14.1173" x2="528.497" y2="854.5" gradientUnits="userSpaceOnUse">
+        <stop offset="0.0816663" stop-color="#FF0225"/>
+        <stop offset="1" stop-color="#191414"/>
+        </linearGradient>
+        </defs>
+        </svg>
+            
+    </div>
+
+    <div class="footer_svg animate__animated animate__fadeInUp">
+        <svg width="1920" height="203" viewBox="0 0 1920 203" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2042 114.5C2042 328.328 1056.5 565.316 518.691 565.316C-19.1185 565.316 -214 426.989 -214 213.161C77 -151.184 323.19 62.3159 861 62.3159C1398.81 62.3159 2042 -99.3283 2042 114.5Z" fill="url(#paint0_linear_7_38)"/>
+        <defs>
+        <linearGradient id="paint0_linear_7_38" x1="1096.22" y1="785.731" x2="1342.46" y2="-213.105" gradientUnits="userSpaceOnUse">
+        <stop offset="0.241666" stop-color="#4B918D"/>
+        <stop offset="1" stop-color="#191414"/>
+        </linearGradient>
+        </defs>
+        </svg>   
+    </div>
+</div>
+    
+</body>
+</html>

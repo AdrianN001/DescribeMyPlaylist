@@ -12,7 +12,14 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type GenrePageTemplateParams struct {
+	FavoriteGenre 				string
+	SecondFavoriteGenre			string
 
+	NumberOfGenres				int
+
+	BackgroundMusicPreviewUrl  	string
+}
 
 func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
 	// session,_ := store.Get(r, "spotify-code")
@@ -45,7 +52,7 @@ func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
 	user.Init(auth.Client(r.Context(), &token))
 	
 
-	rating.RateEmotionalVibeOfSaved(r.Context(), user)
+	rating.RateGenreDiversityFromSaved(r.Context(), user)
 
 
 	w.Write([]byte("asd23"))

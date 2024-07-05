@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rate My Playlist</title>
-    <link rel= "stylesheet" type= "text/css" href= "/static/styles/audio_features.css">
-    <script defer src="/static/js/audio_features.js"></script>
+    <link rel= "stylesheet" type= "text/css" href= "/static/styles/genres.css">
+    <script defer src="/static/js/genres.js"></script>
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -15,27 +15,25 @@
 </head>
 <body>
     <header class="header">
-       <div class="popularity_button">Popularity</div>
-       <div class="artist_button">Artist</div>
-       <div class="audio_features_button"><b>Emotions</b></div>
+       <div class="header_button">Popularity</div>
+       <div class="header_button">Artist</div>
+       <div class="header_button">Emotion</div>
+       <div class="header_button">Musical Elements</div>
+       <div class="header_button">Genre</div>
+
        <div class="next_button">Next =></div>
     </header>
 <div class="main_content">
 
     <div class="hero animate__animated animate__fadeInDown">
-        What vibes <br> does it gives off?
+        What vibes <br> does it give off?
     </div>
 
     <div class="popular_song_container animate__animated animate__fadeInDown" >
-        <div>The happiest song: <b>{{.HappiestSongName}}</b></div>
-        <div>The saddest song: <b>{{.SaddestSongName}}</b></div>
+        <div>Your favorite genre: <b>{{.FavoriteGenre}}</b></div>
+        <div>Your second favorite genre: <b>{{.SecondFavoriteGenre}}</b></div>
         <hr>
-        <div>The most relaxing song: <b>{{.MostRelaxingSongName}}</b></div>
-        <div>The angriest song: <b>{{.AngriestSongName}}</b></div>
-        
-        <hr>
-        <hr>
-        <div> <b>{{.Overview}}</b></div>
+        <div>Number of genres you listen to: <b>{{.NumberOfGenres}}</b></div>
     </div>
 
     <div id="canvas_container">

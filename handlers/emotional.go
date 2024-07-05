@@ -68,13 +68,12 @@ func EmotionalPageHandler(w http.ResponseWriter, r *http.Request) {
 	
 
 	result, err := rating.RateEmotionalVibeOfSaved(r.Context(), user)
-	rating.RateMusicalElementOfSaved(r.Context(), user)
 	if err != nil{
 		return 
 	}
 
 	template_args := template_params_from_audio_features(result)
-	emotional_file := path.Join("static","view","audio_features.html")
+	emotional_file := path.Join("static","view","emotional.html")
 	template, err := template.ParseFiles(emotional_file)
 	if err != nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)

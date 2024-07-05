@@ -96,12 +96,12 @@ a{
   }
 
 .floating_svg{
-    float:right;
+    margin-right:20%;
 }
 
 #floating_svg_tag{
-    margin-top: 20%;
-    margin-left: 50%;
+    margin-top: 5%;
+    margin-left: 15%;
     z-index: 0;
 }
 
@@ -121,11 +121,15 @@ a{
     z-index: 1;
 }
 
-#canvas_container{
+#overviews_container{
     position: absolute;
     top:22%;
     left:40%;
     width: 40%;
+    font-size: 28px;
+    padding-top: 5%;
+    height: 40%;
+    z-index: 2;
 }
 
 .popular_song_container{
@@ -135,6 +139,8 @@ a{
     width: 40%;
 
     justify-content: center;
+    z-index: 2;
+
     
 }
 .next_button{
@@ -155,5 +161,13 @@ a{
 }
 
 .audio_features_button{
-    margin-left: 13%;
+    margin-left: 10%;
+}
+
+.musical_elements_button{
+    margin-left: 10%;
+}
+
+ul{
+    font-weight: bold;
 }

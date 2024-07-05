@@ -11,6 +11,22 @@ import (
 	"github.com/zmb3/spotify/v2"
 )
 type MusicalElementsRating struct {
+	AverageTempo			float32
+	TempoRating				string
+
+	AverageDanceability  	float32
+	DanceabilityRating   	string	
+
+	AverageSpeechines		float32
+	SpeechinesRating		string
+
+	AveragePitch			int
+	PitchRating				string
+
+
+	BonusRating				string
+
+	RandomSong              spotify.SimpleTrack
 }
 
 func RateMusicalElementOfSaved(ctx context.Context, user wrapper.User) (MusicalElementsRating, error){
@@ -59,10 +75,8 @@ func RateMusicalElementOfSaved(ctx context.Context, user wrapper.User) (MusicalE
 	song_moods = song_moods[: len(cached_playlist)]
 
 	average := CalculateAverageMusicalElement(song_moods)
-	overviews := average.Overall()
-
-	log.Println(overviews)
-	return MusicalElementsRating{}, nil
+	rating := create_rating_from_average(average)
+	return rating,  nil
 }
 
 
@@ -71,22 +85,55 @@ func CalculateAverageMusicalElement(songs []wrapper.MusicalElement) wrapper.Musi
 	sum_of_speechiness			:= 0.0					
 	sum_of_accousticness 		:= 0.0
 	sum_of_danceability			:= 0.0
+	sum_of_keys					:= 0			// Probably shouldn't do average, but check the most common key
 	for _, song := range songs{
 		sum_of_tempo += float64(song.Tempo)
 		sum_of_speechiness += float64(song.Speechiness)
 		sum_of_accousticness += float64(song.Accousticness)
 		sum_of_danceability += float64(song.Danceability)
+		sum_of_keys 		+= song.Key
 	}
 
 	avg_tempo := sum_of_tempo / float64(len(songs))
 	avg_speechiness := sum_of_speechiness / float64(len(songs))
 	avg_accousticness := sum_of_accousticness / float64(len(songs))
 	avg_danceability := sum_of_danceability / float64(len(songs))
+	avg_key			 :=  sum_of_keys/len(songs)
+
+	random_song := utils.RandElement(songs).Song
+	for random_song.PreviewURL == ""{
+		random_song = utils.RandElement(songs).Song
+	}
 
 	return wrapper.MusicalElement{
 		Tempo: float32(avg_tempo),
 		Speechiness: float32(avg_speechiness),
 		Accousticness: float32(avg_accousticness),
 		Danceability: float32(avg_danceability),
+
+		Song: random_song,
+		Key: avg_key,
 	}
+}
+
+func create_rating_from_average(average wrapper.MusicalElement ) MusicalElementsRating{
+	bonus_sentence, tempo_overview, danceability_overview, speechiness_overview := average.Overall()
+
+	return MusicalElementsRating{
+		AverageTempo: average.Tempo,
+		TempoRating: tempo_overview,
+
+		AverageDanceability: average.Danceability,
+		DanceabilityRating: danceability_overview,
+
+		AverageSpeechines: average.Speechiness,
+		SpeechinesRating: speechiness_overview,
+
+		AveragePitch: average.Key,
+		PitchRating: wrapper.PitchClass[average.Key],
+
+		BonusRating: bonus_sentence,
+		RandomSong: average.Song,
+	}
+
 }
