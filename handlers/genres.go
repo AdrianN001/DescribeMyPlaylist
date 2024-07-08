@@ -2,9 +2,11 @@ package handlers
 
 import (
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"rate_my_playlist/rating"
 	"rate_my_playlist/wrapper"
 
@@ -14,11 +16,18 @@ import (
 
 type GenrePageTemplateParams struct {
 	FavoriteGenre 				string
+	SongsFromFavGenre			int
 	SecondFavoriteGenre			string
+	SongsFromSecondFavGenre		int
+
 
 	NumberOfGenres				int
 
 	BackgroundMusicPreviewUrl  	string
+
+	BackgroundSongArtist		string
+	BackgroundSongTitle			string
+	BackgroundSongURL			string
 }
 
 func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
@@ -52,8 +61,43 @@ func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
 	user.Init(auth.Client(r.Context(), &token))
 	
 
-	rating.RateGenreDiversityFromSaved(r.Context(), user)
+	result, err := rating.RateGenreDiversityFromSaved(r.Context(), user)
+	if err != nil{
+		log.Fatal(err)
+	}
+	
+	var template_args GenrePageTemplateParams
+	template_args.FromRating(result)
+
+	genre_file := path.Join("static","view","genres.html")
+	template, err := template.ParseFiles(genre_file)
+	if err != nil{
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return 
+	}
+
+	err = template.Execute(w, template_args)
+	if err != nil{
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return 
+	}
 
 
-	w.Write([]byte("asd23"))
+
+}
+
+
+func (template_args *GenrePageTemplateParams) FromRating(genre_rating rating.GenreDiversityRating){
+	template_args.BackgroundMusicPreviewUrl = genre_rating.SampleSong.PreviewURL
+	template_args.FavoriteGenre = genre_rating.FavouriteGenre
+	template_args.SongsFromFavGenre = genre_rating.NumberOfSongsFromFavGenre
+	
+	template_args.SongsFromSecondFavGenre = genre_rating.NumberOfSongsFromSecFavGenre
+	template_args.SecondFavoriteGenre = genre_rating.SecondFavouriteGenre
+	
+	template_args.NumberOfGenres = genre_rating.NumberOfGenres
+
+	template_args.BackgroundSongArtist = genre_rating.SampleSong.Artists[0].Name
+	template_args.BackgroundSongTitle = genre_rating.SampleSong.Name
+	template_args.BackgroundSongURL = genre_rating.SampleSong.ExternalURLs["spotify"]
 }

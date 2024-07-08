@@ -18,7 +18,7 @@ type ArtistDiversityRating struct {
 
 	AllSongN						int
 
-	BackgroundMusicPreviewUrl		string
+	RandomSongFromArtist		spotify.FullTrack
 }
 
 func RateArtistDiversityFromSaved(ctx context.Context, user wrapper.User) (ArtistDiversityRating, error){
@@ -66,7 +66,7 @@ func RateArtistDiversityFromSaved(ctx context.Context, user wrapper.User) (Artis
 		SecondFavouriteArtistSongsN: len(artist_occurences[keys[len(keys)-2]]),
 
 		AllSongN: len(cached_playlist) ,
-		BackgroundMusicPreviewUrl: random_song_from_top_artist.PreviewURL,
+		RandomSongFromArtist: random_song_from_top_artist.FullTrack,
 	}, nil
 }
 

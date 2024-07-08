@@ -6,7 +6,7 @@ window.onload = () => {
         const url = window.location.href;
         const index_of_code = url.indexOf("=")+1;
         const playlist_id = url.substring(index_of_code);
-        window.location.href = `/emotional?playlist=${playlist_id}`
+        window.location.href = `/genre?playlist=${playlist_id}`
     })
 
 

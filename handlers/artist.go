@@ -17,6 +17,10 @@ import (
 type ArtistPageTemplateParameters struct{
 	Overview 						string
 	BackgroundMusicPreviewUrl		string
+
+	BackgroundSongArtist		string
+	BackgroundSongTitle			string
+	BackgroundSongURL			string
 }
 
 func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +61,11 @@ func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	template_args := ArtistPageTemplateParameters{
 		Overview: overview,
-		BackgroundMusicPreviewUrl: result.BackgroundMusicPreviewUrl,
+		BackgroundMusicPreviewUrl: result.RandomSongFromArtist.PreviewURL,
+
+		BackgroundSongArtist: result.RandomSongFromArtist.Artists[0].Name,
+		BackgroundSongTitle: result.RandomSongFromArtist.Name,
+		BackgroundSongURL: result.RandomSongFromArtist.ExternalURLs["spotify"],
 	}
 	artist_file_path := path.Join("static","view","artist.html")
 	template, err := template.ParseFiles(artist_file_path)

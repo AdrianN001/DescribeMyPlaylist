@@ -25,7 +25,7 @@ new Chart(ctx, {
     datasets: [{
       label: '# of songs',
       data: [30, 8, 405],
-      borderWidth: 1
+      borderWidth: 3
     }]
   },
   options: {

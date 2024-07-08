@@ -1,7 +1,5 @@
 window.onload = () => {
-    document.body.style.overflow = 'hidden';
     const next_button = document.querySelector(".next_button");
-
     next_button.addEventListener("click", () =>{
         const url = window.location.href;
         const index_of_code = url.indexOf("=")+1;
@@ -11,6 +9,14 @@ window.onload = () => {
 
     const background_music_tag = document.getElementById("background_music");
     background_music_tag.volume = 0.1;
+
+
+    const now_playing_box = document.getElementById("now_playing_box");
+    const now_playing_box_src = document.getElementsByClassName("now_playing_src")[0].innerHTML;
+    now_playing_box.addEventListener('click', (e) =>{
+      e.preventDefault();
+      window.open(now_playing_box_src, "_blank");
+    })
 }
 
 
@@ -24,7 +30,7 @@ new Chart(ctx, {
     datasets: [{
       label: '# of songs in a given "popularity" region',
       data: [12, 19, 3, 5, 2, 3],
-      borderWidth: 1
+      borderWidth: 3
     }]
   },
   options: {

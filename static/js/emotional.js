@@ -25,7 +25,7 @@ new Chart(ctx, {
     datasets: [{
       label: '# of songs with a given emotional feeling',
       data: [226, 34, 11, 166],
-      borderWidth: 1
+      borderWidth: 3
     }]
   },
   options: {

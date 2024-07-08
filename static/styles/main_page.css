@@ -74,6 +74,8 @@ a{
 }
 
 .hero{
+    text-shadow: 3px 4px 2px #2F2C2C;
+
     font-size: 100px;
     float:left;
     margin-left: 5%;

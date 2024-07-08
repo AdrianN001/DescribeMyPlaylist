@@ -22,6 +22,9 @@ type PopularityPageTemplate struct{
 	Overall						string
 
 	MostPopularSongPreviewUrl 	string
+	BackgroundSongArtist		string
+	BackgroundSongTitle			string
+	BackgroundSongURL			string
 }
 
 func PopularityPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,14 +90,17 @@ func ConvertRatingToPageTemplateArgs(popularity_rating rating.PopularityRating) 
 	least_popular_song_full := fmt.Sprintf("%s-%s", least_popular_song_artist, least_popular_song_name)
 
 
-	preview_url := popularity_rating.MostPopularSong.PreviewURL
+	preview_song := popularity_rating.MostPopularSong
 
 	return PopularityPageTemplate{
 		MostPopularSongName: most_popular_song_full,
 		LeastPopularSongName: least_popular_song_full,
 		AverageRating: popularity_rating.AveragePopularity,
 		Overall: popularity_rating.Overall(),
-		MostPopularSongPreviewUrl: preview_url,
+		MostPopularSongPreviewUrl: preview_song.PreviewURL,
+		BackgroundSongArtist: preview_song.Artists[0].Name,
+		BackgroundSongTitle: preview_song.Name,
+		BackgroundSongURL: preview_song.ExternalURLs["spotify"],
 	}
 	
 

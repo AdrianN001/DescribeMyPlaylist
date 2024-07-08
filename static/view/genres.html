@@ -26,20 +26,21 @@
 <div class="main_content">
 
     <div class="hero animate__animated animate__fadeInDown">
-        What vibes <br> does it give off?
+        What is your favourite genre?
     </div>
 
     <div class="popular_song_container animate__animated animate__fadeInDown" >
-        <div>Your favorite genre: <b>{{.FavoriteGenre}}</b></div>
-        <div>Your second favorite genre: <b>{{.SecondFavoriteGenre}}</b></div>
+        <div>Your favorite genre: <b>{{.FavoriteGenre}}</b> <b>({{.SongsFromFavGenre}} songs)</b></div>
+        <div>Your second favorite genre: <b>{{.SecondFavoriteGenre}}</b> <b>({{.SongsFromSecondFavGenre}} songs)</b></div>
         <hr>
         <div>Number of genres you listen to: <b>{{.NumberOfGenres}}</b></div>
     </div>
 
+    
+
     <div id="canvas_container">
         <canvas id="myChart"></canvas>
     </div>
-
 
     <audio id="background_music" autoplay="true">
     
@@ -48,11 +49,11 @@
     </audio>
 
     <div class="floating_svg animate__animated animate__fadeInUp">
-        <svg width="268" height="869" viewBox="0 0 268 869" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M720.5 418C720.5 631.734 405.761 868.617 234 868.617C62.2394 868.617 0 730.352 0 516.617C0 302.883 62.2393 0 234 0C405.76 0 720.5 204.266 720.5 418Z" fill="url(#paint0_linear_7_49)"/>
+        <svg id="floating_svg_tag" width="386" height="869" viewBox="0 0 386 869" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M720.5 418C720.5 631.734 405.761 868.617 234 868.617C62.2394 868.617 0 730.352 0 516.617C0 302.883 62.2393 0 234 0C405.76 0 720.5 204.266 720.5 418Z" fill="url(#paint0_linear_18_2)"/>
         <defs>
-        <linearGradient id="paint0_linear_7_49" x1="-86.5" y1="196" x2="248.5" y2="740.5" gradientUnits="userSpaceOnUse">
-        <stop offset="0.0816663" stop-color="#F037A5"/>
+        <linearGradient id="paint0_linear_18_2" x1="59.5" y1="97.5" x2="248.5" y2="740.5" gradientUnits="userSpaceOnUse">
+        <stop offset="0.0816663" stop-color="#3805BD"/>
         <stop offset="1" stop-color="#191414"/>
         </linearGradient>
         </defs>
@@ -61,19 +62,23 @@
 
     <div class="footer_svg animate__animated animate__fadeInUp">
         <svg width="1920" height="203" viewBox="0 0 1920 203" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2042 114.5C2042 328.328 1056.5 565.316 518.691 565.316C-19.1185 565.316 -214 426.989 -214 213.161C77 -151.184 323.19 62.3159 861 62.3159C1398.81 62.3159 2042 -99.3283 2042 114.5Z" fill="url(#paint0_linear_7_22)"/>
+        <path d="M2042 114.5C2042 328.328 1056.5 565.316 518.691 565.316C-19.1185 565.316 -214 426.989 -214 213.161C77 -151.184 323.19 62.3159 861 62.3159C1398.81 62.3159 2042 -99.3283 2042 114.5Z" fill="url(#paint0_linear_7_65)"/>
         <defs>
-        <linearGradient id="paint0_linear_7_22" x1="1096.22" y1="785.731" x2="1342.46" y2="-213.105" gradientUnits="userSpaceOnUse">
-        <stop offset="0.241666" stop-color="#CDF564"/>
+        <linearGradient id="paint0_linear_7_65" x1="1096.22" y1="785.731" x2="1342.46" y2="-213.105" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#4200F6"/>
+        <stop offset="0.5" stop-color="#3805BD"/>
         <stop offset="1" stop-color="#191414"/>
         </linearGradient>
         </defs>
-        </svg>
-            
+        </svg>            
     </div>
 
         
-
+    <div class="now_playing_container animate__animated animate__fadeInUp" id="now_playing_box">
+        <div class="now_playing_artist">{{.BackgroundSongArtist}}</div>
+        <div class="now_playing_title">{{.BackgroundSongTitle}}</div>
+        <div class="now_playing_src">{{.BackgroundSongURL}}</div>
+    </div>
 
     
 </div>

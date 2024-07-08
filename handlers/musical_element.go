@@ -29,7 +29,10 @@ type MusicalElementPageTemplateParameters struct{
 	Overviews				[]string
 
 
-	BackgroundMusicPreviewUrl string
+	BackgroundMusicPreviewUrl   string
+	BackgroundSongArtist		string
+	BackgroundSongTitle			string
+	BackgroundSongURL			string
 }
 
 func MusicalElementPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -111,4 +114,10 @@ func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_
 
 	template_params.Overviews = overviews
 	template_params.BackgroundMusicPreviewUrl = musical_rating.RandomSong.PreviewURL
+
+
+
+	template_params.BackgroundSongArtist = musical_rating.RandomSong.Artists[0].Name
+	template_params.BackgroundSongTitle = musical_rating.RandomSong.Name
+	template_params.BackgroundSongURL = musical_rating.RandomSong.ExternalURLs["spotify"]
 }

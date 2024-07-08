@@ -34,6 +34,10 @@ type EmotionalPageTemplateParameters struct{
 
 	Overview 						string
 	BackgroundMusicPreviewUrl		string
+
+	BackgroundSongArtist		string
+	BackgroundSongTitle			string
+	BackgroundSongURL			string
 }
 
 func EmotionalPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -109,6 +113,11 @@ func template_params_from_audio_features(audio_rating rating.EmotionalRating) Em
 		NumberOfRelaxingSong: audio_rating.NumberOfAngrySong,
 
 		BackgroundMusicPreviewUrl: audio_rating.HappiestSong.Song.PreviewURL,
+		
+
+		BackgroundSongArtist: audio_rating.HappiestSong.Song.Artists[0].Name,
+		BackgroundSongTitle: audio_rating.HappiestSong.Song.Name,
+		BackgroundSongURL: audio_rating.HappiestSong.Song.ExternalURLs["spotify"],
 		Overview: "Baszo izelesed van",
 	}
 }
