@@ -16,81 +16,72 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type MusicalElementPageTemplateParameters struct {
+	AverageTempo string
+	AveragePitch string
 
+	AverageDanceability string
+	AverageSingability  string
 
+	Overviews []string
 
-type MusicalElementPageTemplateParameters struct{
-	AverageTempo			string
-	AveragePitch			string
-	
-	AverageDanceability		string
-	AverageSingability		string
-
-	Overviews				[]string
-
-
-	BackgroundMusicPreviewUrl   string
-	BackgroundSongArtist		string
-	BackgroundSongTitle			string
-	BackgroundSongURL			string
+	BackgroundMusicPreviewUrl string
+	BackgroundSongArtist      string
+	BackgroundSongTitle       string
+	BackgroundSongURL         string
 }
 
 func MusicalElementPageHandler(w http.ResponseWriter, r *http.Request) {
 	// session,_ := store.Get(r, "spotify-code")
 
-
 	session, err := store.Get(r, "spotify-code")
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
-	serialized_token, ok := session.Values["token"].([]byte) 
-	if !ok{
+	serialized_token, ok := session.Values["token"].([]byte)
+	if !ok {
 		log.Fatal(ok)
 	}
 
-	var token oauth2.Token 
+	var token oauth2.Token
 
-	err = json.Unmarshal(serialized_token, &token )
-	if err != nil{
+	err = json.Unmarshal(serialized_token, &token)
+	if err != nil {
 		log.Fatal(err)
 	}
-	
-	
-	
-	auth := spotifyauth.New( spotifyauth.WithClientID(os.Getenv("CLIENT_ID")),
-	spotifyauth.WithRedirectURL(os.Getenv("REDIRECT_URI")), 
-	spotifyauth.WithClientSecret(os.Getenv("CLIENT_SECRET")),
-	spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserLibraryRead,  spotifyauth.ScopeUserTopRead, spotifyauth.ScopePlaylistReadPrivate, spotifyauth.ScopePlaylistReadCollaborative))
-	
+
+	auth := spotifyauth.New(spotifyauth.WithClientID(os.Getenv("CLIENT_ID")),
+		spotifyauth.WithRedirectURL(os.Getenv("REDIRECT_URI")),
+		spotifyauth.WithClientSecret(os.Getenv("CLIENT_SECRET")),
+		spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserLibraryRead, spotifyauth.ScopeUserTopRead, spotifyauth.ScopePlaylistReadPrivate, spotifyauth.ScopePlaylistReadCollaborative))
+
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
-	
 
 	result, err := rating.RateMusicalElementOfSaved(r.Context(), user)
-	if err != nil{
-		return 
+	if err != nil {
+		return
 	}
 
 	var template_args MusicalElementPageTemplateParameters
 	template_args.FromRating(result)
 
-	emotional_file := path.Join("static","view","musical_element.html")
+	emotional_file := path.Join("static", "view", "musical_element.html")
 	template, err := template.ParseFiles(emotional_file)
-	if err != nil{
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 
 	err = template.Execute(w, template_args)
-	if err != nil{
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 
 }
 
-
-func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_rating rating.MusicalElementsRating){
+func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_rating rating.MusicalElementsRating) {
 	average_tempo := fmt.Sprintf("%.1f BPM", musical_rating.AverageTempo)
 	average_pitch := musical_rating.PitchRating
 
@@ -98,7 +89,7 @@ func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_
 	average_singability := fmt.Sprintf("%.1f %%", musical_rating.AverageSpeechines*100)
 
 	overviews := []string{musical_rating.SpeechinesRating, musical_rating.TempoRating, musical_rating.DanceabilityRating}
-	if musical_rating.BonusRating != ""{
+	if musical_rating.BonusRating != "" {
 		overviews = append(overviews, musical_rating.BonusRating)
 	}
 
@@ -108,14 +99,12 @@ func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_
 
 	template_params.AverageTempo = average_tempo
 	template_params.AveragePitch = average_pitch
-	
+
 	template_params.AverageDanceability = average_danceability
 	template_params.AverageSingability = average_singability
 
 	template_params.Overviews = overviews
 	template_params.BackgroundMusicPreviewUrl = musical_rating.RandomSong.PreviewURL
-
-
 
 	template_params.BackgroundSongArtist = musical_rating.RandomSong.Artists[0].Name
 	template_params.BackgroundSongTitle = musical_rating.RandomSong.Name

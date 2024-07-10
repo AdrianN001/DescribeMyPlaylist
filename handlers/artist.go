@@ -14,24 +14,21 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type ArtistPageTemplateParameters struct{
+type ArtistPageTemplateParameters struct {
+	FavoriteArtistName       string
+	SecondFavoriteArtistName string
 
-	FavoriteArtistName				string
-	SecondFavoriteArtistName		string
+	FavoriteArtistSongCount       int
+	SecondFavoriteArtistSongCount int
 
-	FavoriteArtistSongCount			int
-	SecondFavoriteArtistSongCount	int
+	RemainingSongCount int
 
-	RemainingSongCount					int
+	Overview string
 
-
-	Overview 						string
-
-
-	BackgroundMusicPreviewUrl		string
-	BackgroundSongArtist			string
-	BackgroundSongTitle				string
-	BackgroundSongURL				string
+	BackgroundMusicPreviewUrl string
+	BackgroundSongArtist      string
+	BackgroundSongTitle       string
+	BackgroundSongURL         string
 }
 
 func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -39,63 +36,61 @@ func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("[@] Request to '/artist' [@]")
 
 	session, err := store.Get(r, "spotify-code")
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
-	serialized_token, ok := session.Values["token"].([]byte) 
-	if !ok{
+	serialized_token, ok := session.Values["token"].([]byte)
+	if !ok {
 		log.Fatal(ok)
 	}
 
-	var token oauth2.Token 
+	var token oauth2.Token
 
-	err = json.Unmarshal(serialized_token, &token )
-	if err != nil{
+	err = json.Unmarshal(serialized_token, &token)
+	if err != nil {
 		log.Fatal(err)
 	}
-	
-	
-	
-	auth := spotifyauth.New( spotifyauth.WithClientID(os.Getenv("CLIENT_ID")),
-	spotifyauth.WithRedirectURL(os.Getenv("REDIRECT_URI")), 
-	spotifyauth.WithClientSecret(os.Getenv("CLIENT_SECRET")),
-	spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserLibraryRead,  spotifyauth.ScopeUserTopRead, spotifyauth.ScopePlaylistReadPrivate, spotifyauth.ScopePlaylistReadCollaborative))
-	
+
+	auth := spotifyauth.New(spotifyauth.WithClientID(os.Getenv("CLIENT_ID")),
+		spotifyauth.WithRedirectURL(os.Getenv("REDIRECT_URI")),
+		spotifyauth.WithClientSecret(os.Getenv("CLIENT_SECRET")),
+		spotifyauth.WithScopes(spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserReadPrivate, spotifyauth.ScopeUserLibraryRead, spotifyauth.ScopeUserTopRead, spotifyauth.ScopePlaylistReadPrivate, spotifyauth.ScopePlaylistReadCollaborative))
+
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
 	result, err := rating.RateArtistDiversityFromSaved(r.Context(), user)
-	if err != nil{
+	if err != nil {
 		return
 	}
 
 	overview := result.Overall()
 
 	template_args := ArtistPageTemplateParameters{
-		Overview: overview,
-		FavoriteArtistName: result.FavouriteArtistName,
+		Overview:                 overview,
+		FavoriteArtistName:       result.FavouriteArtistName,
 		SecondFavoriteArtistName: result.SecondFavouriteArtistName,
 
-		FavoriteArtistSongCount: result.FavouriteArtistSongsN,
+		FavoriteArtistSongCount:       result.FavouriteArtistSongsN,
 		SecondFavoriteArtistSongCount: result.SecondFavouriteArtistSongsN,
 
-		RemainingSongCount: result.AllSongN - result.SecondFavouriteArtistSongsN-result.FavouriteArtistSongsN,
+		RemainingSongCount: result.AllSongN - result.SecondFavouriteArtistSongsN - result.FavouriteArtistSongsN,
 
 		BackgroundMusicPreviewUrl: result.RandomSongFromArtist.PreviewURL,
 
 		BackgroundSongArtist: result.RandomSongFromArtist.Artists[0].Name,
-		BackgroundSongTitle: result.RandomSongFromArtist.Name,
-		BackgroundSongURL: result.RandomSongFromArtist.ExternalURLs["spotify"],
+		BackgroundSongTitle:  result.RandomSongFromArtist.Name,
+		BackgroundSongURL:    result.RandomSongFromArtist.ExternalURLs["spotify"],
 	}
-	artist_file_path := path.Join("static","view","artist.html")
+	artist_file_path := path.Join("static", "view", "artist.html")
 	template, err := template.ParseFiles(artist_file_path)
-	if err != nil{
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 
 	err = template.Execute(w, template_args)
-	if err != nil{
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 }

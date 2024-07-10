@@ -21,7 +21,6 @@ func main() {
 	http.HandleFunc("/emotional", handlers.EmotionalPageHandler)
 	http.HandleFunc("/musical_elements", handlers.MusicalElementPageHandler)
 
-	
 	http.HandleFunc("/{$}", handlers.HomePageHandler)
 
 	http.Handle("/static/", http.StripPrefix("/static/", fs))

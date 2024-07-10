@@ -1,9 +1,5 @@
 package rating
 
-
-
-type  Rater interface{
-
-	
+type Rater interface {
 	Overall() string
 }
