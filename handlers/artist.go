@@ -15,12 +15,23 @@ import (
 )
 
 type ArtistPageTemplateParameters struct{
-	Overview 						string
-	BackgroundMusicPreviewUrl		string
 
-	BackgroundSongArtist		string
-	BackgroundSongTitle			string
-	BackgroundSongURL			string
+	FavoriteArtistName				string
+	SecondFavoriteArtistName		string
+
+	FavoriteArtistSongCount			int
+	SecondFavoriteArtistSongCount	int
+
+	RemainingSongCount					int
+
+
+	Overview 						string
+
+
+	BackgroundMusicPreviewUrl		string
+	BackgroundSongArtist			string
+	BackgroundSongTitle				string
+	BackgroundSongURL				string
 }
 
 func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -61,6 +72,14 @@ func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	template_args := ArtistPageTemplateParameters{
 		Overview: overview,
+		FavoriteArtistName: result.FavouriteArtistName,
+		SecondFavoriteArtistName: result.SecondFavouriteArtistName,
+
+		FavoriteArtistSongCount: result.FavouriteArtistSongsN,
+		SecondFavoriteArtistSongCount: result.SecondFavouriteArtistSongsN,
+
+		RemainingSongCount: result.AllSongN - result.SecondFavouriteArtistSongsN-result.FavouriteArtistSongsN,
+
 		BackgroundMusicPreviewUrl: result.RandomSongFromArtist.PreviewURL,
 
 		BackgroundSongArtist: result.RandomSongFromArtist.Artists[0].Name,

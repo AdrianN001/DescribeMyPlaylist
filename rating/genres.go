@@ -76,6 +76,8 @@ func RateGenreDiversityFromSaved(ctx context.Context, user wrapper.User) (GenreD
 	}
 	rating.SampleSong = sample_song
 
+	rating.NumberOfSongs = len(cached_playlist)
+
 	return rating, nil
 }
 
@@ -100,11 +102,9 @@ func TopGenresFromFrequencies(genres map[string]int) GenreDiversityRating{
 	number_of_genres := len(genres)
 
 	var genres_keys []string = make([]string, 0, number_of_genres)
-	var songs_count int = 0
 
 	for key := range genres {		
 		genres_keys = append(genres_keys, key)
-		songs_count += genres[key]
 	} 
 
 	sort.SliceStable(genres_keys, func(i, j int) bool {
@@ -113,11 +113,7 @@ func TopGenresFromFrequencies(genres map[string]int) GenreDiversityRating{
 
 	favourite_genre := genres_keys[len(genres_keys)-1]
 	second_favourite_genre := genres_keys[len(genres_keys)-2]
-
-	fmt.Printf("favourite_genre: %v\n", favourite_genre)
-	fmt.Printf("second_favourite_genre: %v\n", second_favourite_genre)
-	fmt.Printf("number_of_genres: %v\n", number_of_genres)
-
+	
 	return GenreDiversityRating{
 		FavouriteGenre: favourite_genre,
 		NumberOfSongsFromFavGenre: genres[favourite_genre],
@@ -126,7 +122,6 @@ func TopGenresFromFrequencies(genres map[string]int) GenreDiversityRating{
 		NumberOfSongsFromSecFavGenre: genres[second_favourite_genre],
 
 		NumberOfGenres: number_of_genres,
-		NumberOfSongs: songs_count,
 	}
 }
 

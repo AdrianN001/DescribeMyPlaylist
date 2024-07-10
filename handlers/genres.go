@@ -22,6 +22,7 @@ type GenrePageTemplateParams struct {
 
 
 	NumberOfGenres				int
+	AllSongsCount				int
 
 	BackgroundMusicPreviewUrl  	string
 
@@ -100,4 +101,5 @@ func (template_args *GenrePageTemplateParams) FromRating(genre_rating rating.Gen
 	template_args.BackgroundSongArtist = genre_rating.SampleSong.Artists[0].Name
 	template_args.BackgroundSongTitle = genre_rating.SampleSong.Name
 	template_args.BackgroundSongURL = genre_rating.SampleSong.ExternalURLs["spotify"]
+	template_args.AllSongsCount = genre_rating.NumberOfSongs
 }

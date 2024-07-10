@@ -11,6 +11,8 @@ import (
 type PopularityRating struct {
 	MostPopularSong   spotify.SavedTrack
 	LeastPopularSong  spotify.SavedTrack
+
+	Distribution      []int
 	AveragePopularity int
 }
 
@@ -53,6 +55,7 @@ func RatePopularityOfSavedTracks(ctx context.Context, user wrapper.User) (Popula
 	return PopularityRating{
 		MostPopularSong: most_popular_song,
 		LeastPopularSong: least_popular_song,
+		Distribution: GetPopularityDistributionOfSaved(cached_playlist),
 		AveragePopularity: avg_popularity,
 	}, nil
 }
@@ -60,6 +63,19 @@ func RatePopularityOfSavedTracks(ctx context.Context, user wrapper.User) (Popula
 func RatePopularityOfPlaylist(ctx context.Context, user wrapper.User, playlist_id string){
 	
 
+}
+
+func GetPopularityDistributionOfSaved(songs []spotify.SavedTrack) []int {
+	var distribution_list []int = make([]int, 5)
+	
+	for _, song := range songs{
+		popularity := song.Popularity
+
+		distribution_place := int(popularity / 20)
+
+		distribution_list[distribution_place]++
+	}
+	return distribution_list
 }
 
 func (rate PopularityRating) Overall() string {

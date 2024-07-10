@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rate My Playlist</title>
-    <link rel= "stylesheet" type= "text/css" href= "/static/styles/emotional.css">
-    <script defer src="/static/js/emotional.js"></script>
+    <link rel= "stylesheet" type= "text/css" href= "/static/styles/unified.css">
+    <script defer src="/static/js/header.js"></script>
+    <script defer src="/static/js/now_playing.js"></script>
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -15,15 +17,19 @@
 </head>
 <body>
     <header class="header">
-       <div class="popularity_button">Popularity</div>
-       <div class="artist_button">Artist</div>
-       <div class="audio_features_button"><b>Emotions</b></div>
+       
+        <div id="popularity_button" class="header_button">Popularity</div>
+        <div id="artist_button" class="header_button">Artist</div>
+        <div id="emotion_button" class="header_button"><b>Emotion</b></div>
+        <div id="musical_element_button" class="header_button">Musical Elements</div>
+        <div id="genre_button" class="header_button">Genre</div>
+ 
        <div class="next_button">Next =></div>
     </header>
 <div class="main_content">
 
     <div class="hero animate__animated animate__fadeInDown">
-        What vibes <br> does it give off?
+        What vibes <br> do they give off?
     </div>
 
     <div class="popular_song_container animate__animated animate__fadeInDown" >
@@ -83,6 +89,31 @@
 
     
 </div>
-    
+    <script>
+
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Happy', 'Sad', 'Relaxing', 'Angry'],
+    datasets: [{
+      label: '# of songs with a given emotional feeling',
+      data: [{{.NumberOfHappySong}}, {{.NumberOfSadSong}}, {{.NumberOfRelaxingSong}}, {{.NumberOfAngrySong}}],
+      borderWidth: 3
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+
+    </script>
 </body>
 </html>

@@ -7,6 +7,8 @@ window.onload = () => {
         window.location.href = new_url;
 
     }))
+
+    
 };
 
 
