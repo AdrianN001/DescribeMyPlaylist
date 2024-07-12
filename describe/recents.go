@@ -8,8 +8,8 @@ import (
 )
 
 type RecentTopArtistsAndTracks struct {
-	TopArtists    		[]spotify.FullArtist
-	TopTracks			[]spotify.FullTrack
+	TopArtists []spotify.FullArtist
+	TopTracks  []spotify.FullTrack
 }
 
 func DescribeRecentTopArtistsAndTracks(ctx context.Context, user wrapper.User, time_range spotify.Range) (RecentTopArtistsAndTracks, error) {
@@ -20,17 +20,16 @@ func DescribeRecentTopArtistsAndTracks(ctx context.Context, user wrapper.User, t
 	client := user.Client()
 
 	artists, err := GetUserTopArtist(ctx, spotify.ID(current_user.ID), client, time_range)
-	if err != nil{
+	if err != nil {
 		return RecentTopArtistsAndTracks{}, err
 	}
 	tracks, err := GetUserTopTracks(ctx, spotify.ID(current_user.ID), client, time_range)
-	if err != nil{
+	if err != nil {
 		return RecentTopArtistsAndTracks{}, err
 	}
 
 	return RecentTopArtistsAndTracks{
 		TopArtists: artists,
-		TopTracks: tracks,
+		TopTracks:  tracks,
 	}, nil
 }
-

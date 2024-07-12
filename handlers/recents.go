@@ -17,14 +17,13 @@ import (
 )
 
 type RecentPagePayload struct {
+	TopArtists []spotify.FullArtist `json:"artists"`
+	TopTracks  []spotify.FullTrack  `json:"tracks"`
 
-	TopArtists []spotify.FullArtist		`json:"artists"`
-	TopTracks  []spotify.FullTrack		`json:"tracks"`
-
-	BackgroundMusicPreviewUrl string	`json:"preview_url"`
+	BackgroundMusicPreviewUrl string `json:"preview_url"`
 }
 
-func RecentPageRequestHandler(w http.ResponseWriter, r *http.Request){
+func RecentPageRequestHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("[@] Request to '/get_recent' [@]")
 
 	session, err := store.Get(r, "spotify-code")
@@ -53,29 +52,26 @@ func RecentPageRequestHandler(w http.ResponseWriter, r *http.Request){
 
 	time_range := r.URL.Query().Get("time_range")
 
-
 	recents, err := describe.DescribeRecentTopArtistsAndTracks(r.Context(), user, spotify.Range(time_range))
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	payload := RecentPagePayload{
 		TopArtists: recents.TopArtists,
-		TopTracks: recents.TopTracks,
+		TopTracks:  recents.TopTracks,
 
 		BackgroundMusicPreviewUrl: utils.RandElement[spotify.FullTrack](recents.TopTracks).PreviewURL,
 	}
 
 	payload_buffer, err := json.Marshal(payload)
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 	w.Write(payload_buffer)
 }
 
-
-
-func RecentPageHandler(w http.ResponseWriter, r *http.Request){
+func RecentPageHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("[@] Request to '/recents' [@]")
 
 	session, err := store.Get(r, "spotify-code")

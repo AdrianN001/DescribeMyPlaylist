@@ -11,14 +11,14 @@ import (
 )
 
 var (
-	PlaylistTracksCache map[string][]spotify.PlaylistTrack 		= make(map[string][]spotify.PlaylistTrack)
-	SavedTracksCache    map[string][]spotify.SavedTrack    		= make(map[string][]spotify.SavedTrack)
+	PlaylistTracksCache map[string][]spotify.PlaylistTrack = make(map[string][]spotify.PlaylistTrack)
+	SavedTracksCache    map[string][]spotify.SavedTrack    = make(map[string][]spotify.SavedTrack)
 
-	ArtistCache         map[spotify.ID]spotify.FullArtist    	= make(map[spotify.ID]spotify.FullArtist)
-	AudioFeatureCache   map[spotify.ID]spotify.AudioFeatures 	= make(map[spotify.ID]spotify.AudioFeatures)
+	ArtistCache       map[spotify.ID]spotify.FullArtist    = make(map[spotify.ID]spotify.FullArtist)
+	AudioFeatureCache map[spotify.ID]spotify.AudioFeatures = make(map[spotify.ID]spotify.AudioFeatures)
 
-	TopTracksCache    	map[string][]spotify.FullTrack 	   		= make(map[string][]spotify.FullTrack)
-	TopArtistCache    	map[string][]spotify.FullArtist    		= make(map[string][]spotify.FullArtist)
+	TopTracksCache map[string][]spotify.FullTrack  = make(map[string][]spotify.FullTrack)
+	TopArtistCache map[string][]spotify.FullArtist = make(map[string][]spotify.FullArtist)
 )
 
 var (
@@ -28,23 +28,22 @@ var (
 	ArtistCacheMutex       sync.Mutex = sync.Mutex{}
 	AudioFeatureCacheMutex sync.Mutex = sync.Mutex{}
 
-	TopTracksCacheMutex   sync.Mutex = sync.Mutex{}
-	TopArtistCacheMutex   sync.Mutex = sync.Mutex{}
+	TopTracksCacheMutex sync.Mutex = sync.Mutex{}
+	TopArtistCacheMutex sync.Mutex = sync.Mutex{}
 )
 
-
-func GetUserTopArtist(ctx context.Context, user_id spotify.ID, client *spotify.Client, time_range spotify.Range) ([]spotify.FullArtist, error){
+func GetUserTopArtist(ctx context.Context, user_id spotify.ID, client *spotify.Client, time_range spotify.Range) ([]spotify.FullArtist, error) {
 	cache_key := fmt.Sprintf("%s-%s", user_id, time_range)
-	
+
 	TopArtistCacheMutex.Lock()
 	artists, ok := TopArtistCache[cache_key]
 	TopArtistCacheMutex.Unlock()
-	if ok{
+	if ok {
 		return artists, nil
 	}
 
 	artist_page, err := client.CurrentUsersTopArtists(ctx, spotify.Timerange(time_range), spotify.Limit(10))
-	if err != nil{
+	if err != nil {
 		return []spotify.FullArtist{}, err
 	}
 	TopArtistCacheMutex.Lock()
@@ -53,19 +52,18 @@ func GetUserTopArtist(ctx context.Context, user_id spotify.ID, client *spotify.C
 	return artist_page.Artists, nil
 }
 
-
-func GetUserTopTracks(ctx context.Context, user_id spotify.ID, client *spotify.Client, time_range spotify.Range) ([]spotify.FullTrack, error){
+func GetUserTopTracks(ctx context.Context, user_id spotify.ID, client *spotify.Client, time_range spotify.Range) ([]spotify.FullTrack, error) {
 	cache_key := fmt.Sprintf("%s-%s", user_id, time_range)
-	
+
 	TopTracksCacheMutex.Lock()
 	artists, ok := TopTracksCache[cache_key]
 	TopTracksCacheMutex.Unlock()
-	if ok{
+	if ok {
 		return artists, nil
 	}
 
 	track_page, err := client.CurrentUsersTopTracks(ctx, spotify.Timerange(time_range), spotify.Limit(10))
-	if err != nil{
+	if err != nil {
 		return []spotify.FullTrack{}, err
 	}
 	TopTracksCacheMutex.Lock()

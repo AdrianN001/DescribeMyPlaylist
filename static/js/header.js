@@ -30,5 +30,5 @@ document.getElementById("genre_button").addEventListener('click', (e) =>{
 
 document.getElementById("recents_button").addEventListener('click', (e) =>{
     e.preventDefault()
-    window.location.href=`/recents`
+    window.location.href=`/recents?playlist=${playlist_id}`
 })

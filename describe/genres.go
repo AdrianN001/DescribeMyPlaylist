@@ -127,10 +127,10 @@ func TopGenresFromFrequencies(genres map[string]int) GenreDiversityRating {
 }
 
 func SearchSongFromSavedWithGenre(ctx context.Context, user wrapper.User, songs []spotify.SavedTrack, searched_genre string) (spotify.SavedTrack, error) {
-	
+
 	const max_depth int = 20
 	depth := rand.Intn(max_depth)
-	
+
 	for _, song := range songs {
 
 		main_artist := song.Artists[0].ID
@@ -145,7 +145,7 @@ func SearchSongFromSavedWithGenre(ctx context.Context, user wrapper.User, songs 
 		for _, genre := range full_artist.Genres {
 			if genre == searched_genre && depth == 0 {
 				return song, nil
-			}else if genre == searched_genre && depth > 0{
+			} else if genre == searched_genre && depth > 0 {
 				depth--
 			}
 		}

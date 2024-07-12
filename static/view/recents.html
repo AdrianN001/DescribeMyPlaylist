@@ -7,10 +7,6 @@
     <link rel= "stylesheet" type= "text/css" href= "/static/styles/recents.css">
     <script defer src="/static/js/header.js"></script>
     <script defer src="/static/js/recents.js"></script>
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
 
 </head>
 <body>
@@ -25,15 +21,24 @@
     </header>
 <div class="main_content">
 
-    <h1 class="top_artist_title">Top artists:</h2>
-    <h1 class="top_tracks_title">Top tracks:</h2>
+    <h1 class="top_artist_title">Top artists:</h1>
+    <h1 class="top_tracks_title">Top tracks:</h1>
+    
+    <div id="time_range_buttons_container" >
+        <button class="time_range_button" id="long_term_button">All Time</button>
+        <br>
+        <button class="time_range_button" id="mid_term_button">Last 6 Months</button>
+        <br>
+        <button class="time_range_button" id="short_term_button">Last Month</button>
+    </div>
+    
     <div id="artists" class="artists_container">
     </div>
     <div id="tracks" class="tracks_container">
     </div>
 
 
-    <audio id="background_music" autoplay="true">
+    <audio id="background_music" autoplay=true>
         <source id="background_music_src">
     </audio>
 

@@ -73,7 +73,7 @@ a{
     width: 40%;
     float:left;
     margin-top: 5%;
-    margin-left: 8%;
+    margin-left: 10%;
 }
 .top_artist_title{
     margin-left: 15%;
@@ -103,8 +103,48 @@ a{
 
 .track{
     background: none;
-
+    cursor: pointer;
     font-size: 2rem;
     height: 120px;
 }
 
+span{
+    color: #1DB954;
+}
+
+.time_range_button{
+    margin-bottom: 20%;
+    
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px 14px 18px;
+    color: #616467;
+    box-shadow: inset 0 0 0 2px #616467;
+    background-color: transparent;
+    height: 48px;
+    
+
+}
+.time_range_button:hover{
+    color: #fff;
+    background-color: #616467;
+}
+
+#time_range_buttons_container{
+    position: absolute;
+    float:left;
+    top:50%;
+}
