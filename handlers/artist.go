@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"rate_my_playlist/rating"
+	"rate_my_playlist/describe"
 	"rate_my_playlist/wrapper"
 
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -58,7 +58,7 @@ func ArtistPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
-	result, err := rating.RateArtistDiversityFromSaved(r.Context(), user)
+	result, err := describe.RateArtistDiversityFromSaved(r.Context(), user)
 	if err != nil {
 		return
 	}

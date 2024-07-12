@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"rate_my_playlist/rating"
+	"rate_my_playlist/describe"
 	"rate_my_playlist/wrapper"
 
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -55,7 +55,7 @@ func PopularityPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
-	result, err := rating.RatePopularityOfSavedTracks(r.Context(), user)
+	result, err := describe.RatePopularityOfSavedTracks(r.Context(), user)
 	if err != nil {
 		return
 	}
@@ -75,7 +75,7 @@ func PopularityPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ConvertRatingToPageTemplateArgs(popularity_rating rating.PopularityRating) PopularityPageTemplate {
+func ConvertRatingToPageTemplateArgs(popularity_rating describe.PopularityRating) PopularityPageTemplate {
 	most_popular_song_artist := popularity_rating.MostPopularSong.Artists[0].Name
 	least_popular_song_artist := popularity_rating.LeastPopularSong.Artists[0].Name
 

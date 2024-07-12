@@ -1,4 +1,4 @@
-package rating
+package describe
 
 import (
 	"context"

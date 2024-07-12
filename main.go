@@ -20,6 +20,8 @@ func main() {
 	http.HandleFunc("/genre", handlers.GenrePageHandler)
 	http.HandleFunc("/emotional", handlers.EmotionalPageHandler)
 	http.HandleFunc("/musical_elements", handlers.MusicalElementPageHandler)
+	http.HandleFunc("/get_recents", handlers.RecentPageRequestHandler)
+	http.HandleFunc("/recents", handlers.RecentPageHandler)
 
 	http.HandleFunc("/{$}", handlers.HomePageHandler)
 

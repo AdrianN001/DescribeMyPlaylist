@@ -12,7 +12,7 @@ window.onload = () => {
 };
 
 
-
+/*
 window.onSpotifyWebPlaybackSDKReady = async () => {
     const token = await (await fetch("/token")).text();
     const player = new Spotify.Player({
@@ -57,3 +57,4 @@ window.onSpotifyWebPlaybackSDKReady = async () => {
     })
 }
 
+*/

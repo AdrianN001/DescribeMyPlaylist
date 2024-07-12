@@ -26,3 +26,9 @@ document.getElementById("genre_button").addEventListener('click', (e) =>{
     e.preventDefault()
     window.location.href=`/genre?playlist=${playlist_id}`
 })
+
+
+document.getElementById("recents_button").addEventListener('click', (e) =>{
+    e.preventDefault()
+    window.location.href=`/recents`
+})

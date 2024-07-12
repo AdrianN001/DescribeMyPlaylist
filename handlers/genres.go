@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"rate_my_playlist/rating"
+	"rate_my_playlist/describe"
 	"rate_my_playlist/wrapper"
 
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -57,7 +57,7 @@ func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
 
-	result, err := rating.RateGenreDiversityFromSaved(r.Context(), user)
+	result, err := describe.RateGenreDiversityFromSaved(r.Context(), user)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -80,7 +80,7 @@ func GenrePageHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (template_args *GenrePageTemplateParams) FromRating(genre_rating rating.GenreDiversityRating) {
+func (template_args *GenrePageTemplateParams) FromRating(genre_rating describe.GenreDiversityRating) {
 	template_args.BackgroundMusicPreviewUrl = genre_rating.SampleSong.PreviewURL
 	template_args.FavoriteGenre = genre_rating.FavouriteGenre
 	template_args.SongsFromFavGenre = genre_rating.NumberOfSongsFromFavGenre

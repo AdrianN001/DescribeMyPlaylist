@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"rate_my_playlist/rating"
+	"rate_my_playlist/describe"
 	"rate_my_playlist/wrapper"
 
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -62,7 +62,7 @@ func EmotionalPageHandler(w http.ResponseWriter, r *http.Request) {
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
 
-	result, err := rating.RateEmotionalVibeOfSaved(r.Context(), user)
+	result, err := describe.RateEmotionalVibeOfSaved(r.Context(), user)
 	if err != nil {
 		return
 	}
@@ -83,7 +83,7 @@ func EmotionalPageHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func template_params_from_audio_features(audio_rating rating.EmotionalRating) EmotionalPageTemplateParameters {
+func template_params_from_audio_features(audio_rating describe.EmotionalRating) EmotionalPageTemplateParameters {
 
 	var max_magnitude_value float64 = math.Sqrt(0.5*0.5 + 0.5*0.5)
 

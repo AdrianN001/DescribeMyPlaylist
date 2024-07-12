@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"rate_my_playlist/rating"
+	"rate_my_playlist/describe"
 	"rate_my_playlist/wrapper"
 
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -58,7 +58,7 @@ func MusicalElementPageHandler(w http.ResponseWriter, r *http.Request) {
 	var user wrapper.User
 	user.Init(auth.Client(r.Context(), &token))
 
-	result, err := rating.RateMusicalElementOfSaved(r.Context(), user)
+	result, err := describe.RateMusicalElementOfSaved(r.Context(), user)
 	if err != nil {
 		return
 	}
@@ -81,7 +81,7 @@ func MusicalElementPageHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_rating rating.MusicalElementsRating) {
+func (template_params *MusicalElementPageTemplateParameters) FromRating(musical_rating describe.MusicalElementsRating) {
 	average_tempo := fmt.Sprintf("%.1f BPM", musical_rating.AverageTempo)
 	average_pitch := musical_rating.PitchRating
 

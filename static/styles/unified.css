@@ -9,7 +9,7 @@
 html, body{
     background-color: var(--main_bgd-color);
     color: var(--main-text-color);
-
+    overflow: hidden;
     font-family: "Inter", sans-serif;
     height: 100%;
 }
@@ -89,7 +89,7 @@ a{
 }
 
 #floating_svg_tag{
-    margin-top: 20%;
+    margin-top: 0%;
     margin-left: 40%;
     z-index: 0;
 }
@@ -147,7 +147,7 @@ a{
 
 .header_button{
     cursor: pointer;
-    margin-left: 10%;
+    margin-left: 8%;
 }
 
 #canvas_container{
